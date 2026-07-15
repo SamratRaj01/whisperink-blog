@@ -13,6 +13,16 @@ npm run build    # production build → dist/
 npm run preview  # preview the production build
 ```
 
+## Deploy to GitHub Pages
+
+This project is configured for GitHub Pages with a repo-relative Vite base path.
+
+1. In GitHub, open the repository settings and set Pages to deploy from GitHub Actions.
+2. Push to `main`.
+3. The workflow in `.github/workflows/deploy.yml` will build `dist/` and publish it.
+
+If you see a `main.jsx` 404 in the browser, it usually means Pages is serving the source tree instead of the built Vite output. The workflow above prevents that.
+
 > **On "requirements":** JavaScript projects declare their dependencies in
 > **`package.json`** (installed with `npm install`) — that file is the React
 > equivalent of a Python `requirements.txt`.
