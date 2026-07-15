@@ -104,12 +104,6 @@ export default function App({
       <Footer
         onGoHome={goHome}
         onGoFeatured={() => scrollToSection('whisperink-featured')}
-        onGoConstruction={() =>
-          openConstructionNotice(
-            'Still Building',
-            'This lower passage is not ready yet. The lanterns are up, but the floorboards are still being written.'
-          )
-        }
       />
 
       {lib.view === 'reading' && lib.story && (
@@ -127,8 +121,7 @@ export default function App({
         <StillBuilding
           title={constructionNotice.title}
           message={constructionNotice.message}
-          onReturnHome={goHome}
-          onReturnLibrary={() => scrollToSection('whisperink-library')}
+          onReturnLibrary={() => setConstructionNotice(null)}
         />
       )}
 

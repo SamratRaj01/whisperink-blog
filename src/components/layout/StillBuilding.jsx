@@ -1,6 +1,6 @@
 import { fonts, colors } from '../../styles/theme';
 
-export default function StillBuilding({ title, message, onReturnHome, onReturnLibrary }) {
+export default function StillBuilding({ title, message, onReturnLibrary }) {
   return (
     <div
       style={{
@@ -65,23 +65,6 @@ export default function StillBuilding({ title, message, onReturnHome, onReturnLi
             }}
           >
             Return to the Library
-          </button>
-          <button
-            type="button"
-            className="wi-btn"
-            onClick={onReturnHome}
-            style={{
-              appearance: 'none',
-              border: '1px solid rgba(167,123,63,.55)',
-              background: 'transparent',
-              color: colors.ink,
-              padding: '12px 18px',
-              borderRadius: 999,
-              fontFamily: fonts.display,
-              letterSpacing: 1,
-            }}
-          >
-            Back to the Header
           </button>
         </div>
       </div>

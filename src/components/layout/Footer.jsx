@@ -1,6 +1,6 @@
 import { fonts } from '../../styles/theme';
 
-export default function Footer({ onGoHome, onGoFeatured, onGoConstruction }) {
+export default function Footer({ onGoHome, onGoFeatured }) {
   return (
     <div
       style={{
@@ -51,24 +51,6 @@ export default function Footer({ onGoHome, onGoFeatured, onGoConstruction }) {
           }}
         >
           Featured Stories
-        </button>
-        <button
-          type="button"
-          onClick={onGoConstruction}
-          className="wi-btn"
-          style={{
-            appearance: 'none',
-            background: 'transparent',
-            border: '1px solid rgba(167,123,63,.4)',
-            padding: '10px 14px',
-            borderRadius: 999,
-            fontFamily: fonts.display,
-            fontSize: 12,
-            letterSpacing: 1,
-            color: '#c2ab84',
-          }}
-        >
-          Still Building
         </button>
         <div style={{ fontFamily: fonts.english, fontStyle: 'italic', fontSize: 16, color: '#6a6354' }}>
           Some stories were never meant to be preserved. We keep them anyway.
