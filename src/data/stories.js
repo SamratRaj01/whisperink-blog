@@ -1,0 +1,29 @@
+// The archive catalogue. `cover` is the two-stop cover gradient, `foil` the
+// title/plate colour, `bodyKey` (when present) links to a full transcription
+// in storyBodies.js, and `featured` surfaces the story on the default view.
+export const stories = [
+  { title: 'Ghosts in the Algorithm',       genres: ['horror'], bodyKey: 'ghosts', cover: ['#6b1f2a', '#3c1016'], foil: '#e3c489', teaser: 'Leave the playlist running four hours, Semir said. After that, the video that plays will tell you the energy of the room. It has mostly been bad.', time: '9 min', archive: 'Recovered · 2024', glabel: 'Horror', featured: true },
+  { title: 'GREED Would Kill Them All',      genres: ['horror'], cover: ['#5e1c24', '#34101a'], foil: '#e3c489', teaser: 'Singing soldiers, ten months from home, and one last temptation on the road.', time: '12 min', archive: 'Archive Entry #018', glabel: 'Horror' },
+  { title: 'Welcome, We Are Neighbours',     genres: ['horror'], cover: ['#5a232b', '#321119'], foil: '#e3c489', teaser: '“Crazy people live here,” she said for the third time. The neighbours had begun to complain.', time: '8 min', archive: 'Falling · Part I', glabel: 'Horror' },
+  { title: 'Falling — Part One',             genres: ['horror'], cover: ['#4e1f28', '#2c0f16'], foil: '#e3c489', teaser: 'No building is haunted without a few mystery deaths first. Building 260 was overdue.', time: '10 min', archive: 'Falling · Part II', glabel: 'Horror' },
+  { title: 'Falling — Part Two',             genres: ['horror'], cover: ['#46202a', '#280e15'], foil: '#e3c489', teaser: 'Eyes shut, hands over her ears — but the opening and closing would not stop.', time: '9 min', archive: 'Falling · Part III', glabel: 'Horror' },
+  { title: 'Captive Whispers',               genres: ['horror'], cover: ['#3f1f2a', '#220e15'], foil: '#d8b9a0', teaser: 'Another murder mystery, another ghost story — just something interesting to tell her friends.', time: '8 min', archive: 'Archive Entry #003', glabel: 'Horror' },
+  { title: 'It Is the Movie Night!',         genres: ['horror'], cover: ['#46232c', '#260f17'], foil: '#d8b9a0', teaser: 'No parties, no reckless antics. For Kali and Meha, the perfect Friday is a marathon of terror.', time: '6 min', archive: 'Archive Entry #002', glabel: 'Horror' },
+
+  { title: 'The Life We Carry',              genres: ['verse'], cover: ['#34435a', '#1d2738'], foil: '#bcd0e2', teaser: 'The only shoulders that ever caught our tears have always been our own.', time: '4 min', archive: 'A short verse', glabel: 'Verse', featured: true },
+  { title: 'END — Distance over You & Me',   genres: ['verse'], cover: ['#3c4f63', '#202c39'], foil: '#bcd0e2', teaser: 'Stay on the call an hour or two. I have been missing you, for a few more songs.', time: '3 min', archive: 'A short verse', glabel: 'Verse' },
+  { title: 'Blue vs Grey',                   genres: ['verse'], cover: ['#324a64', '#1b2838'], foil: '#bcd0e2', teaser: 'You love the blue of the sky. I have only ever known the grey beneath it.', time: '3 min', archive: 'A short verse', glabel: 'Verse' },
+  { title: 'Whispers…',                      genres: ['verse'], cover: ['#384a60', '#1f2a38'], foil: '#bcd0e2', teaser: 'A heart weighed with woe, vision blurred — a solitary figure, cold and alone.', time: '3 min', archive: 'A short verse', glabel: 'Verse' },
+  { title: 'You Turn 25',                    genres: ['verse'], cover: ['#3a4c5e', '#202c38'], foil: '#bcd0e2', teaser: 'Late-night talks no longer help. What the hell am I doing with this life?', time: '3 min', archive: 'A short verse', glabel: 'Verse' },
+  { title: 'Autumn and Me',                  genres: ['verse'], cover: ['#3f4a5c', '#222b38'], foil: '#bcd0e2', teaser: 'The falling leaves, the cold breeze — this death is the most beautiful one to witness.', time: '3 min', archive: 'A short verse', glabel: 'Verse' },
+  { title: 'Struggling Hearts',              genres: ['verse'], cover: ['#36465c', '#1e2836'], foil: '#bcd0e2', teaser: 'The love was once so immense all five senses could feel it. My heart fails to see it now.', time: '4 min', archive: 'A short verse', glabel: 'Verse' },
+
+  { title: 'The Inevitability of Change',    genres: ['reflections'], cover: ['#37454c', '#1c272d'], foil: '#cdd6d2', teaser: 'Change disrupts everything we know — and somewhere inside the loss, an opening waits.', time: '6 min', archive: 'A reflection', glabel: 'Reflections', featured: true },
+  { title: 'The Unexpected Cure for Loneliness', genres: ['reflections'], cover: ['#33403f', '#1a2322'], foil: '#cdd6d2', teaser: 'So many smiling faces in the feed. How many of them feel truly seen?', time: '5 min', archive: 'A reflection', glabel: 'Reflections' },
+  { title: 'Echoes of Self-Reflection',      genres: ['reflections'], cover: ['#3a4744', '#1f2926'], foil: '#cdd6d2', teaser: 'I see it for what it is. How do I let you know that I see more than that?', time: '4 min', archive: 'A reflection', glabel: 'Reflections' },
+
+  { title: 'Arya! Let Her Go…',              genres: ['heart'], cover: ['#5b3340', '#341c25'], foil: '#e2bcc6', teaser: 'Two sisters, a mother slipping away, and a love that cannot agree on how to hold on.', time: '11 min', archive: 'Recovered · 2024', glabel: 'Tender Dark', featured: true },
+  { title: 'He’s a Dad',                     genres: ['heart'], cover: ['#553040', '#311b25'], foil: '#e2bcc6', teaser: 'A borrowed book, a girl with pretty eyes, and the next fifty years already decided.', time: '7 min', archive: 'Archive Entry #006', glabel: 'Tender Dark' },
+
+  { title: 'Story of a Fairy from Far Lands', genres: ['folklore'], cover: ['#46512f', '#262e19'], foil: '#d8dab0', teaser: 'The pretty version is sold in many lands. In ours, she is something far older.', time: '8 min', archive: 'Recovered · 2024', glabel: 'Folk & Fae', featured: true },
+];

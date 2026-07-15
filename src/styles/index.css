@@ -1,0 +1,122 @@
+/* ============================================================
+   WhisperInk — global styles
+   Base reset, keyframes, and the hover interactions that the
+   original expressed with `style-hover` attributes. Per-element
+   dynamic values (gradients, colours) stay as inline styles in
+   the components; reusable interaction states live here.
+   ============================================================ */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: #0b0e12;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+::selection {
+  background: #6b1f2a;
+  color: #e6dcc6;
+}
+
+/* ---------- atmosphere keyframes ---------- */
+@keyframes wi-lamp {
+  0%, 100% { opacity: 0.82; }
+  22% { opacity: 0.6; }
+  41% { opacity: 0.95; }
+  63% { opacity: 0.7; }
+  84% { opacity: 0.88; }
+}
+@keyframes wi-lampcore {
+  0%, 100% { transform: scaleY(1); opacity: 0.95; }
+  30% { transform: scaleY(0.92); opacity: 0.8; }
+  55% { transform: scaleY(1.06); opacity: 1; }
+  78% { transform: scaleY(0.96); opacity: 0.85; }
+}
+@keyframes wi-dust {
+  from { transform: translateY(0) translateX(0); opacity: 0; }
+  14% { opacity: 0.5; }
+  86% { opacity: 0.22; }
+  to { transform: translateY(-220px) translateX(18px); opacity: 0; }
+}
+@keyframes wi-breathe {
+  0%, 100% { opacity: 0.99; }
+  50% { opacity: 0.9; }
+}
+@keyframes wi-ember {
+  0% { transform: translateY(0) translateX(0); opacity: 0; }
+  12% { opacity: 0.7; }
+  88% { opacity: 0.32; }
+  100% { transform: translateY(-480px) translateX(40px); opacity: 0; }
+}
+@keyframes wi-fog {
+  0% { transform: translate3d(-5%, 0, 0) scale(1); }
+  50% { transform: translate3d(5%, -2%, 0) scale(1.08); }
+  100% { transform: translate3d(-5%, 0, 0) scale(1); }
+}
+@keyframes wi-flicker {
+  0%, 100% { opacity: 0.85; }
+  8% { opacity: 0.32; }
+  9% { opacity: 0.9; }
+  39% { opacity: 0.78; }
+  41% { opacity: 0.4; }
+  43% { opacity: 0.88; }
+  70% { opacity: 0.55; }
+  72% { opacity: 0.85; }
+}
+
+/* ---------- interaction states ----------
+   Inline styles win over class rules, so hover colour overrides
+   use !important to take effect. Base colours remain inline on the
+   elements to keep each component self-descriptive. */
+
+.wi-navlink {
+  cursor: pointer;
+  transition: color 0.35s;
+}
+.wi-navlink:hover {
+  color: #e3d6ba !important;
+}
+
+.wi-spine {
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s, filter 0.4s;
+}
+.wi-spine:hover {
+  transform: translateY(-16px);
+  filter: brightness(1.12) !important;
+  box-shadow: 0 22px 34px rgba(0, 0, 0, 0.55), 0 0 22px 2px var(--wi-halo);
+}
+
+.wi-card {
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.45s;
+}
+.wi-card:hover {
+  transform: translateY(-10px) rotate(-0.5deg);
+  box-shadow: 0 32px 52px rgba(0, 0, 0, 0.62);
+}
+
+/* outlined brass button that fills on hover (Open Book, Notify, toolbar) */
+.wi-btn {
+  cursor: pointer;
+  transition: background 0.35s, color 0.35s, border-color 0.35s;
+}
+.wi-btn:hover {
+  background: #a77b3f !important;
+  color: #14110d !important;
+  border-color: #a77b3f !important;
+}
+
+/* plain text link that brightens on hover */
+.wi-link {
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.wi-link:hover {
+  color: #e6dcc6 !important;
+}
