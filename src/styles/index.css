@@ -49,11 +49,30 @@ body {
   0%, 100% { opacity: 0.99; }
   50% { opacity: 0.9; }
 }
-@keyframes wi-ember {
-  0% { transform: translateY(0) translateX(0); opacity: 0; }
+/* Embers (components/atmosphere/Embers.jsx): a steady linear climb, with
+   per-ember noise layered on by nested elements. --wi-drift / --wi-a are set
+   per ember. */
+@keyframes wi-ember-rise {
+  0% { transform: translate(0, 0); opacity: 0; }
   12% { opacity: 0.7; }
   88% { opacity: 0.32; }
-  100% { transform: translateY(-480px) translateX(40px); opacity: 0; }
+  100% { transform: translate(var(--wi-drift, 40px), -480px); opacity: 0; }
+}
+@keyframes wi-ember-sway {
+  from { transform: translateX(calc(var(--wi-a) * -1)); }
+  to { transform: translateX(var(--wi-a)); }
+}
+@keyframes wi-ember-bob {
+  from { transform: translateY(calc(var(--wi-a) * -1)); }
+  to { transform: translateY(var(--wi-a)); }
+}
+@keyframes wi-ember-flicker {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  17% { opacity: 0.55; transform: scale(0.82); }
+  31% { opacity: 0.95; transform: scale(1.08); }
+  46% { opacity: 0.7; transform: scale(0.9); }
+  63% { opacity: 1; transform: scale(1.14); }
+  79% { opacity: 0.48; transform: scale(0.84); }
 }
 @keyframes wi-fog {
   0% { transform: translate3d(-5%, 0, 0) scale(1); }
@@ -212,5 +231,9 @@ body {
     animation: none !important;
     transition: none !important;
     scroll-behavior: auto !important;
+  }
+  /* Without motion the embers would be frozen dots; leave them out. */
+  .wi-embers {
+    display: none;
   }
 }
