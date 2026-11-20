@@ -1,8 +1,9 @@
 // A small oil lamp at the left end of the shelf, casting a flickering pool of
-// warm light. Shown when the `showLamp` prop is enabled.
+// warm light. Shown when the `showLamp` prop is enabled; hidden on phones
+// (.wi-lamp) so the spines get the width.
 export default function Lamp() {
   return (
-    <div style={{ position: 'relative', width: 78, height: 150, marginRight: 6, alignSelf: 'flex-end' }}>
+    <div className="wi-lamp" aria-hidden="true" style={{ position: 'relative', flexShrink: 0, width: 78, height: 150, marginRight: 6, alignSelf: 'flex-end' }}>
       {/* light pool + flame core */}
       <div
         style={{

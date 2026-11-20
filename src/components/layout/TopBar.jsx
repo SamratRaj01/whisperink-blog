@@ -1,18 +1,29 @@
 import { fonts, colors } from '../../styles/theme';
 
-const NAV = ['Library', 'About', 'Leave a Manuscript'];
+const navButton = {
+  fontFamily: fonts.display,
+  fontSize: 14,
+  letterSpacing: 1,
+  color: colors.muted,
+};
 
 // Top utility bar: archive wordmark on the left, navigation on the right.
-export default function TopBar({ onGoHome, onGoLibrary, onGoAbout, onGoManuscript }) {
+// Wraps and centres on phones (.wi-topbar).
+// (A "Leave a Manuscript" submissions link is future work: the archive holds
+// only the author's own stories for now.)
+export default function TopBar({ onGoHome, onGoLibrary, onGoAbout }) {
+  const nav = [
+    ['Library', onGoLibrary],
+    ['About', onGoAbout],
+  ];
+
   return (
     <div
+      className="wi-topbar"
       style={{
         position: 'relative',
         zIndex: 5,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '26px 48px',
+        padding: 'clamp(16px, 4vw, 26px) clamp(16px, 4vw, 48px)',
         maxWidth: 1320,
         margin: '0 auto',
       }}
@@ -20,47 +31,18 @@ export default function TopBar({ onGoHome, onGoLibrary, onGoAbout, onGoManuscrip
       <button
         type="button"
         onClick={onGoHome}
-        className="wi-navlink"
-        style={{
-          appearance: 'none',
-          background: 'transparent',
-          border: 'none',
-          padding: 0,
-          fontFamily: fonts.display,
-          fontSize: 14,
-          letterSpacing: 3,
-          color: colors.muted,
-          textAlign: 'left',
-        }}
+        className="wi-navlink wi-reset"
+        style={{ fontFamily: fonts.display, fontSize: 14, letterSpacing: 3, color: colors.muted }}
       >
         The WhisperInk Archive
       </button>
-      <div style={{ display: 'flex', gap: 30, fontFamily: fonts.display, fontSize: 14, letterSpacing: 1 }}>
-        {NAV.map((item) => {
-          const action = item === 'Library' ? onGoLibrary : item === 'About' ? onGoAbout : onGoManuscript;
-
-          return (
-            <button
-              key={item}
-              type="button"
-              onClick={action}
-              className="wi-navlink"
-              style={{
-                appearance: 'none',
-                background: 'transparent',
-                border: 'none',
-                padding: 0,
-                fontFamily: fonts.display,
-                fontSize: 14,
-                letterSpacing: 1,
-                color: colors.muted,
-              }}
-            >
-              {item}
-            </button>
-          );
-        })}
-      </div>
+      <nav aria-label="Main" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '8px clamp(14px, 4vw, 30px)' }}>
+        {nav.map(([label, action]) => (
+          <button key={label} type="button" onClick={action} className="wi-navlink wi-reset" style={navButton}>
+            {label}
+          </button>
+        ))}
+      </nav>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { genres } from '../../data/genres';
+import { countByGenre } from '../../data/catalogue';
 import GenreSpine from './GenreSpine';
 import Lamp from './Lamp';
 
@@ -10,14 +11,17 @@ const DUST = [
 ];
 
 // The bookshelf: a row of genre spines resting on a wooden plank, optionally
-// lit by the lamp and dusted with drifting motes.
+// lit by the lamp and dusted with drifting motes. Spines narrow on small
+// screens and the lamp steps aside; if the row still can't fit, it scrolls
+// sideways (see .wi-shelf-scroll) instead of being clipped.
 export default function Shelf({ selectedGenre, onSelectGenre, showLamp, showDust }) {
   return (
-    <div style={{ position: 'relative', zIndex: 4, maxWidth: 1040, margin: '52px auto 0', padding: '0 32px' }}>
+    <div style={{ position: 'relative', zIndex: 4, maxWidth: 1040, margin: '52px auto 0', padding: '0 clamp(16px, 4vw, 32px)' }}>
       {showDust &&
         DUST.map((d, i) => (
           <div
             key={i}
+            aria-hidden="true"
             style={{
               position: 'absolute',
               left: d.left,
@@ -33,21 +37,29 @@ export default function Shelf({ selectedGenre, onSelectGenre, showLamp, showDust
           />
         ))}
 
-      <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'center', gap: 14, height: 232, position: 'relative', zIndex: 2 }}>
-        {showLamp && <Lamp />}
-        {genres.map((g) => (
-          <GenreSpine
-            key={g.id}
-            genre={g}
-            selected={selectedGenre === g.id}
-            filtered={selectedGenre !== 'all'}
-            onSelect={onSelectGenre}
-          />
-        ))}
+      <div className="wi-shelf-scroll" style={{ position: 'relative', zIndex: 2 }}>
+        <div
+          role="group"
+          aria-label="Collections"
+          style={{ display: 'flex', alignItems: 'flex-end', gap: 'clamp(6px, 2vw, 14px)', height: 232, width: 'max-content', margin: '0 auto' }}
+        >
+          {showLamp && <Lamp />}
+          {genres.map((g) => (
+            <GenreSpine
+              key={g.id}
+              genre={g}
+              count={countByGenre(g.id)}
+              selected={selectedGenre === g.id}
+              filtered={selectedGenre !== 'all'}
+              onSelect={onSelectGenre}
+            />
+          ))}
+        </div>
       </div>
 
       {/* shelf plank + soft shadow */}
       <div
+        aria-hidden="true"
         style={{
           height: 24,
           borderRadius: 3,
@@ -56,7 +68,7 @@ export default function Shelf({ selectedGenre, onSelectGenre, showLamp, showDust
             'repeating-linear-gradient(90deg, rgba(0,0,0,.14) 0 1px, transparent 1px 60px), linear-gradient(180deg, #5a3f24, #261a11)',
         }}
       />
-      <div style={{ height: 26, margin: '0 14px', borderRadius: '0 0 10px 10px', background: 'linear-gradient(180deg, rgba(0,0,0,.5), transparent)', filter: 'blur(3px)' }} />
+      <div aria-hidden="true" style={{ height: 26, margin: '0 14px', borderRadius: '0 0 10px 10px', background: 'linear-gradient(180deg, rgba(0,0,0,.5), transparent)', filter: 'blur(3px)' }} />
     </div>
   );
 }

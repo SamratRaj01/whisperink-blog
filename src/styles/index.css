@@ -120,3 +120,97 @@ body {
 .wi-link:hover {
   color: #e6dcc6 !important;
 }
+
+/* ---------- semantic elements, unstyled ----------
+   Real <button>s and <a>s carry the old div/span looks: strip the UA
+   chrome and let the inline styles take over. */
+.wi-reset {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+.wi-plainlink {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+.wi-heading {
+  margin: 0;
+  font-weight: normal;
+}
+
+/* ---------- keyboard focus ---------- */
+.wi-btn:focus-visible,
+.wi-link:focus-visible,
+.wi-navlink:focus-visible,
+.wi-card:focus-visible,
+.wi-spine:focus-visible {
+  outline: 2px solid #c9a24a;
+  outline-offset: 3px;
+}
+.wi-spine:focus-visible {
+  transform: translateY(-16px);
+  box-shadow: 0 22px 34px rgba(0, 0, 0, 0.55), 0 0 22px 2px var(--wi-halo);
+}
+[role='dialog']:focus {
+  outline: none;
+}
+
+/* ---------- responsive layout ----------
+   Sizes are fluid via clamp() inline; only layout switches live here. */
+.wi-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+}
+.wi-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(246px, 100%), 246px));
+  gap: 44px 36px;
+  justify-content: start;
+}
+.wi-show-narrow {
+  display: none;
+}
+
+@media (max-width: 639px) {
+  .wi-topbar,
+  .wi-card-grid {
+    justify-content: center;
+  }
+  .wi-lamp,
+  .wi-hide-narrow {
+    display: none;
+  }
+  .wi-show-narrow {
+    display: inline;
+  }
+  /* If the shelf ever outgrows a phone, scroll it rather than clip it. The
+     padding/margin pair leaves headroom for the lifted spine. */
+  .wi-shelf-scroll {
+    overflow-x: auto;
+    padding-top: 40px;
+    margin-top: -40px;
+    scrollbar-width: none;
+  }
+}
+
+/* ---------- reduced motion ----------
+   Inline `animation` declarations lose to !important here. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,7 +1,7 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { fonts } from './styles/theme';
 import { useLibrary } from './hooks/useLibrary';
-import { stories } from './data/stories';
+import { stories } from './data/catalogue';
 import { moodBg } from './data/moods';
 
 import RoughFilter from './components/atmosphere/RoughFilter';
@@ -15,39 +15,74 @@ import Shelf from './components/shelf/Shelf';
 import FeaturedSection from './components/stories/FeaturedSection';
 import ReadingView from './components/reading/ReadingView';
 
+const NOTICES = {
+  about: {
+    title: 'About the Archive',
+    message:
+      'This wing is still being catalogued. The archivist keeps misplacing the notes, so the story lives behind a velvet curtain for now.',
+  },
+  notify: {
+    title: 'The Mailing List',
+    message:
+      'The list of names is still being stitched together. Check back when the first reel arrives. The archivist will leave a light on.',
+  },
+  missing: {
+    title: 'This Manuscript Was Never Recovered',
+    message:
+      'Whatever this link once pointed to has slipped between the shelves, or was never here at all. The rest of the archive is still waiting.',
+  },
+};
+
+const scrollBehavior = () =>
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+
 // Root component. Accepts the presentation props (tagline/mood/accent/…),
 // owns library state via useLibrary, derives the visible story list from the
-// selected genre, and switches between the library and reading views.
-export default function App({
-  tagline = 'Stories for Sleepless Nights',
-  mood = 'moonlit',
-  accent = '#c9a24a',
-  showLamp = true,
-  showDust = true,
-}) {
+// selected genre, and layers the reader / notices over the library.
+export default function App({ tagline, mood, accent, showLamp, showDust }) {
   const lib = useLibrary();
-  const [constructionNotice, setConstructionNotice] = useState(null);
+  const [notice, setNotice] = useState(null);
   const pageBg = moodBg[mood] || moodBg.moonlit;
 
   // Default view shows featured stories; a selected spine filters by genre.
   const visibleStories =
-    lib.genre === 'all'
-      ? stories.filter((s) => s.featured)
-      : stories.filter((s) => s.genres.includes(lib.genre));
+    lib.genre === 'all' ? stories.filter((s) => s.featured) : stories.filter((s) => s.genre === lib.genre);
 
   const scrollToSection = useCallback((sectionId) => {
-    if (typeof document === 'undefined') return;
-    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: scrollBehavior(), block: 'start' });
   }, []);
 
   const goHome = useCallback(() => {
-    setConstructionNotice(null);
-    if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
+    setNotice(null);
+    window.scrollTo({ top: 0, behavior: scrollBehavior() });
   }, []);
 
-  const openConstructionNotice = useCallback((title, message) => {
-    setConstructionNotice({ title, message });
-  }, []);
+  const closeNotice = useCallback(() => setNotice(null), []);
+  const activeNotice = notice ? NOTICES[notice] : lib.missing ? NOTICES.missing : null;
+  const onCloseNotice = notice ? closeNotice : lib.returnToLibrary;
+
+  // While the reader or a notice is open, the library behind it is inert
+  // (unreachable by Tab or screen reader) and doesn't scroll. On close, focus
+  // goes back to whatever opened the overlay. Layout effect: this must run
+  // before the overlay's own effects take focus, and un-inert the library
+  // before focus is restored to it.
+  const overlayOpen = Boolean(lib.story || activeNotice);
+  const libraryRef = useRef(null);
+  const openerRef = useRef(null);
+  useLayoutEffect(() => {
+    const library = libraryRef.current;
+    if (overlayOpen) {
+      openerRef.current = document.activeElement;
+      library.inert = true;
+      document.documentElement.style.overflow = 'hidden';
+      return;
+    }
+    library.inert = false;
+    document.documentElement.style.overflow = '';
+    const opener = openerRef.current;
+    openerRef.current = null;
+    if (opener && opener !== document.body && document.contains(opener)) opener.focus({ preventScroll: true });
+  }, [overlayOpen]);
 
   return (
     <div
@@ -56,58 +91,50 @@ export default function App({
         minHeight: '100vh',
         background: '#0b0e12',
         fontFamily: fonts.serif,
-        overflow: 'hidden',
+        overflowX: 'clip',
         paddingBottom: 80,
       }}
     >
       <RoughFilter />
       <Atmosphere pageBg={pageBg} />
 
-      <div id="whisperink-top">
-        <TopBar
-          onGoHome={goHome}
-          onGoLibrary={() => scrollToSection('whisperink-library')}
-          onGoAbout={() =>
-            openConstructionNotice(
-              'About the Archive',
-              'This wing is still being catalogued. The archivist keeps misplacing the notes, so the story lives behind a velvet curtain for now.'
-            )
-          }
-          onGoManuscript={() =>
-            openConstructionNotice(
-              'Leave a Manuscript',
-              'The submission desk is still being built from salvaged oak and bad decisions. Bring your draft back once the ink dries on the landing page.'
-            )
-          }
-        />
-        <Hero tagline={tagline} accent={accent} />
+      <div ref={libraryRef}>
+        <header id="whisperink-top">
+          <TopBar
+            onGoHome={goHome}
+            onGoLibrary={() => scrollToSection('whisperink-library')}
+            onGoAbout={() => setNotice('about')}
+          />
+          <Hero tagline={tagline} accent={accent} />
+        </header>
+
+        <main>
+          <div id="whisperink-library">
+            <Shelf
+              selectedGenre={lib.genre}
+              onSelectGenre={lib.toggleGenre}
+              showLamp={showLamp}
+              showDust={showDust}
+            />
+          </div>
+
+          <div id="whisperink-featured">
+            <FeaturedSection
+              selectedGenre={lib.genre}
+              stories={visibleStories}
+              onOpenStory={lib.openStory}
+              onClearGenre={lib.clearGenre}
+              onNotify={() => setNotice('notify')}
+            />
+          </div>
+        </main>
+
+        <Footer onGoHome={goHome} />
       </div>
 
-      <div id="whisperink-library">
-        <Shelf
-          selectedGenre={lib.genre}
-          onSelectGenre={lib.toggleGenre}
-          showLamp={showLamp}
-          showDust={showDust}
-        />
-      </div>
-
-      <div id="whisperink-featured">
-        <FeaturedSection
-          selectedGenre={lib.genre}
-          stories={visibleStories}
-          onOpenStory={lib.openStory}
-          onClearGenre={lib.clearGenre}
-        />
-      </div>
-
-      <Footer
-        onGoHome={goHome}
-        onGoFeatured={() => scrollToSection('whisperink-featured')}
-      />
-
-      {lib.view === 'reading' && lib.story && (
+      {lib.story && (
         <ReadingView
+          key={lib.story.slug}
           story={lib.story}
           fontScale={lib.fontScale}
           onReturn={lib.returnToLibrary}
@@ -117,12 +144,8 @@ export default function App({
         />
       )}
 
-      {constructionNotice && (
-        <StillBuilding
-          title={constructionNotice.title}
-          message={constructionNotice.message}
-          onReturnLibrary={() => setConstructionNotice(null)}
-        />
+      {activeNotice && !lib.story && (
+        <StillBuilding title={activeNotice.title} message={activeNotice.message} onReturnLibrary={onCloseNotice} />
       )}
 
       <FilmGrain />

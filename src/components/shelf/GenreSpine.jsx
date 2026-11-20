@@ -3,21 +3,29 @@ import { spineBg } from '../../utils/gradients';
 import { genreMeta } from '../../data/genres';
 import Motif from '../Motif';
 
-// A single book spine on the shelf. Brightness reflects selection state:
-// full when active, dimmed when another genre is selected, neutral otherwise.
-export default function GenreSpine({ genre, selected, filtered, onSelect }) {
+// A single book spine on the shelf: a toggle button for that genre's
+// collection. Brightness reflects selection state: full when active, dimmed
+// when another genre is selected, neutral otherwise.
+export default function GenreSpine({ genre, count, selected, filtered, onSelect }) {
   const meta = genreMeta[genre.id] || genreMeta.horror;
   const bright = selected ? 1.16 : filtered ? 0.74 : 1;
+  const label = genre.soon
+    ? `${genre.name} — coming soon`
+    : `${genre.name} — ${count} ${genre.noun[count === 1 ? 0 : 1]}`;
 
   return (
-    <div
-      className="wi-spine"
+    <button
+      type="button"
+      className="wi-spine wi-reset"
       onClick={() => onSelect(genre.id)}
+      aria-pressed={selected}
+      aria-label={label}
       style={{
         // exposed to the CSS hover rule for the glow colour
         '--wi-halo': genre.halo,
         position: 'relative',
-        width: 64,
+        flexShrink: 0,
+        width: 'clamp(40px, 11vw, 64px)',
         height: genre.height,
         borderRadius: '2px 5px 5px 2px',
         cursor: 'pointer',
@@ -31,10 +39,11 @@ export default function GenreSpine({ genre, selected, filtered, onSelect }) {
         filter: `brightness(${bright})`,
       }}
     >
-      <div style={{ width: 32, height: 34, opacity: 0.92 }}>
-        <Motif name={meta.motif} color={genre.foil} />
-      </div>
+      <span aria-hidden="true" style={{ display: 'block', width: 32, maxWidth: '80%', height: 34, opacity: 0.92 }}>
+        <Motif as="span" name={meta.motif} color={genre.foil} />
+      </span>
       <span
+        aria-hidden="true"
         style={{
           writingMode: 'vertical-rl',
           transform: 'rotate(180deg)',
@@ -47,9 +56,9 @@ export default function GenreSpine({ genre, selected, filtered, onSelect }) {
       >
         {genre.name}
       </span>
-      <span style={{ fontFamily: fonts.serif, fontSize: 12, color: 'rgba(255,255,255,.5)' }}>
-        {genre.count}
+      <span aria-hidden="true" style={{ fontFamily: fonts.serif, fontSize: 12, color: 'rgba(255,255,255,.5)' }}>
+        {genre.soon ? 'soon' : count}
       </span>
-    </div>
+    </button>
   );
 }

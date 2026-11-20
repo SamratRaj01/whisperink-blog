@@ -23,36 +23,41 @@ export default function ReadingToolbar({ onReturn, onDec, onReset, onInc }) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '16px 40px',
+        gap: 12,
+        padding: '16px clamp(14px, 4vw, 40px)',
         background: 'linear-gradient(180deg, rgba(12,10,11,.96), rgba(12,10,11,.78))',
         backdropFilter: 'blur(8px)',
         borderBottom: '1px solid rgba(167,123,63,.22)',
       }}
     >
-      <div
-        className="wi-link"
+      <button
+        type="button"
+        className="wi-link wi-reset"
         onClick={onReturn}
-        style={{ fontFamily: fonts.display, fontSize: 14, letterSpacing: 1, color: '#c2ab84' }}
+        aria-label="Return to the Library"
+        style={{ fontFamily: fonts.display, fontSize: 14, letterSpacing: 1, color: '#c2ab84', whiteSpace: 'nowrap' }}
       >
-        ← Return to the Library
-      </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-        <span style={{ fontFamily: fonts.display, fontSize: 12, letterSpacing: 1, color: '#7d6238', marginRight: 8 }}>
+        ← Return<span className="wi-hide-narrow"> to the Library</span>
+      </button>
+      <div role="group" aria-label="Text size" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <span className="wi-hide-narrow" aria-hidden="true" style={{ fontFamily: fonts.display, fontSize: 12, letterSpacing: 1, color: '#8f7a52', marginRight: 8 }}>
           Text Size
         </span>
-        <span className="wi-btn" onClick={onDec} style={{ ...squareBtn, fontSize: 14 }}>
+        <button type="button" className="wi-btn wi-reset" onClick={onDec} aria-label="Decrease text size" style={{ ...squareBtn, fontSize: 14 }}>
           A−
-        </span>
-        <span
-          className="wi-link"
+        </button>
+        <button
+          type="button"
+          className="wi-link wi-reset"
           onClick={onReset}
+          aria-label="Reset text size"
           style={{ fontFamily: fonts.display, fontSize: 11, letterSpacing: 1, color: '#9a8a6e', padding: '0 8px', height: 30, display: 'flex', alignItems: 'center' }}
         >
           Reset
-        </span>
-        <span className="wi-btn" onClick={onInc} style={{ ...squareBtn, fontSize: 19 }}>
+        </button>
+        <button type="button" className="wi-btn wi-reset" onClick={onInc} aria-label="Increase text size" style={{ ...squareBtn, fontSize: 19 }}>
           A+
-        </span>
+        </button>
       </div>
     </div>
   );
